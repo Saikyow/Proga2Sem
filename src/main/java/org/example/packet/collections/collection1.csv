@@ -1,0 +1,4 @@
+key;id;name;x;y;creationDate;height;weight;hairColor;nationality;locationX;locationY;locationZ;locationName
+225;3;Neiko;15.0;52;2026-04-04T16:47:27.799330+03:00[Europe/Moscow];5252.0;5252.0;BROWN;ITALY;22.0;22;2.0;Moscow
+515;2;Anton;25.0;52;2026-04-04T16:46:34.657011+03:00[Europe/Moscow];1090.0;190.0;WHITE;ITALY;;;;
+11;1;ABC;5.0;2;2026-04-04T15:52:39.831207+03:00[Europe/Moscow];100.0;100.0;BROWN;ITALY;;;;

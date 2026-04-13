@@ -1,0 +1,13 @@
+
+insert 123
+pop
+1
+1
+white
+italy
+90
+190
+n
+show
+info
+exit

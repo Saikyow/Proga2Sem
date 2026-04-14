@@ -8,6 +8,7 @@ import org.example.server.managers.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
@@ -55,6 +56,8 @@ public class Server {
 
                     toClient(clientSocket);
                 }
+            }catch (BindException e){
+                ServerLogger.error("Порт " + port + " уже занят. Сервер не может быть запущен.");
             }
 
         } catch (Exception e) {

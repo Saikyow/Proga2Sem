@@ -17,11 +17,7 @@ public class Save implements Command {
         this.csvManager = csvParserManager.getInstance();
     }
 
-    public ResponsePacket executeCommand(CommandPacket commandPacket){
-        if (commandPacket.getArgs() != null && commandPacket.getArgs().length > 0) {
-            return new ResponsePacket("Команда save не принимает аргументы.", null);
-        }
-
+    public ResponsePacket execute() {
         boolean success = csvManager.writeCSV(filePath, collectionManager.getCollection());
 
         if (success) {
@@ -29,8 +25,14 @@ public class Save implements Command {
         } else {
             return new ResponsePacket("Не удалось сохранить коллекцию.", null);
         }
-
     }
 
+    @Override
+    public ResponsePacket executeCommand(CommandPacket commandPacket) {
+        if (commandPacket.getArgs() != null && commandPacket.getArgs().length > 0) {
+            return new ResponsePacket("Команда save не принимает аргументы.", null);
+        }
 
+        return execute();
+    }
 }

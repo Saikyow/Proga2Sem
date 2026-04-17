@@ -5,13 +5,14 @@ import org.example.packet.request.CommandPacket;
 import org.example.server.logger.ServerLogger;
 import org.example.server.managers.*;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStreamReader;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Scanner;
 
 public class Server {
 
@@ -47,6 +48,8 @@ public class Server {
 
             managerParserServer = new ManagerParserServer(collectionManager, filePath);
 
+            startConsoleThread();
+
             try (ServerSocket serverSocket = new ServerSocket(port)) {
                 ServerLogger.info("Сервер запущен на порту " + port);
 
@@ -54,9 +57,10 @@ public class Server {
                     Socket clientSocket = serverSocket.accept();
                     ServerLogger.info("Подключился клиент: " + clientSocket.getInetAddress());
 
-                    toClient(clientSocket);
+                    new Thread(() -> toClient(clientSocket)).start();
                 }
-            }catch (BindException e){
+
+            } catch (BindException e) {
                 ServerLogger.error("Порт " + port + " уже занят. Сервер не может быть запущен.");
             }
 
@@ -64,6 +68,23 @@ public class Server {
             ServerLogger.error("Ошибка запуска сервера: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private static void startConsoleThread() {
+        Thread consoleThread = new Thread(() -> {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    managerParserServer.parserServer(line);
+                }
+            } catch (Exception e) {
+                ServerLogger.error("Ошибка чтения консоли: " + e.getMessage());
+            }
+        });
+
+        consoleThread.setDaemon(true);
+        consoleThread.start();
     }
 
     private static void toClient(Socket clientSocket) {

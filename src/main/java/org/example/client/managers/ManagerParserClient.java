@@ -18,7 +18,6 @@
     import org.example.client.commands.RemoveKey;
     import org.example.client.commands.ReplaceIfGreater;
     import org.example.client.commands.ReplaceIfLowe;
-    import org.example.client.commands.Save;
     import org.example.client.commands.Show;
     import org.example.client.commands.SumOfWeight;
     import org.example.client.commands.UpdateID;
@@ -43,7 +42,6 @@
         this.commands.put("update_id", new UpdateID());
         this.commands.put("remove_key", new RemoveKey());
         this.commands.put("clear", new Clear());
-        this.commands.put("save", new Save());
         this.commands.put("execute_script", new ExecuteScript());
         this.commands.put("exit", new Exit(ManagerInputOutput.getInstance()));
         this.commands.put("history", new History());

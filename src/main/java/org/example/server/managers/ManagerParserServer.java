@@ -10,11 +10,10 @@ import java.util.HashMap;
 public class ManagerParserServer {
 
     private final HashMap<String, Command> commands;
+    private final Save saveCommand;
 
     public ManagerParserServer(CollectionManager collectionManager, String filePath) {
         this.commands = new HashMap<>();
-
-        csvParserManager csvManager = csvParserManager.getInstance();
 
         commands.put("clear", new Clear(collectionManager));
         commands.put("show", new Show(collectionManager));
@@ -27,7 +26,27 @@ public class ManagerParserServer {
         commands.put("group_counting_by_name", new GroupCountingByName(collectionManager));
         commands.put("print_ascending", new PrintAscending(collectionManager));
         commands.put("info", new Info(collectionManager));
-        commands.put("save", new Save(collectionManager, filePath));
+
+        this.saveCommand = new Save(collectionManager, filePath);
+        commands.put("save", saveCommand);
+    }
+
+    public void parserServer(String s) {
+        if (s == null || s.trim().isEmpty()) {
+            return;
+        }
+
+        String[] parts = s.trim().split("\\s+");
+        String commandName = parts[0];
+
+        switch (commandName) {
+            case "save":
+                ResponsePacket response = saveCommand.execute();
+                System.out.println(response.getMessage());
+                break;
+            default:
+                System.out.println("Неизвестная серверная команда: " + commandName);
+        }
     }
 
     public ResponsePacket execute(CommandPacket packet) {
